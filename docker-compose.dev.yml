@@ -1,0 +1,36 @@
+services:
+  app:
+    container_name: student_info_app_dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ./app              #  compiled binary name
+    volumes:
+      - ./src:/app/src          # live code editing
+      - ./build:/app/build      # build files
+    working_dir: /app
+    depends_on:
+      - db
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    stdin_open: true
+    tty: true                    # lets you interact with CLI
+
+  db:
+    image: postgres:16
+    container_name: postgres_dev
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+
+volumes:
+  pgdata_dev:

@@ -1,0 +1,19 @@
+# git
+.git
+.gitignore
+
+# build output
+build/
+
+# docs and misc
+docs/
+
+# local environment
+.env
+*.log
+
+# IDE/editor
+.vscode/
+
+# OS files
+.DS_Store

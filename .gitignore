@@ -1,0 +1,21 @@
+# build artifacts
+build/
+
+# binaries
+*.o
+*.out
+*.exe
+*.a
+*.so
+
+# IDEs / editors
+.vscode/
+
+# OS files
+.DS_Store
+
+# env files
+.env
+
+# docker
+*.pid

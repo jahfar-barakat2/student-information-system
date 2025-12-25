@@ -7,6 +7,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN g++ -std=c++17 main.cpp -lpqxx -lpq -o app
+RUN g++ -std=c++17 src/main.cpp -lpqxx -lpq -o app
 
 CMD ["./app"]

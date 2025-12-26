@@ -8,8 +8,6 @@ services:
     volumes:
       - ./src:/app/src          # live code editing
       - ./build:/app/build      # build files
-    networks:
-      - student_net
     working_dir: /app
     depends_on:
       - db
@@ -22,7 +20,7 @@ services:
     tty: true                    # lets you interact with CLI
 
   db:
-    image: postgres:18.1
+    image: postgres:16
     container_name: postgres_dev
     restart: always
     environment:
@@ -33,14 +31,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata_dev:/var/lib/postgresql/data
-      - ./db/init:/docker-entrypoint-initdb.d
-    networks:
-      - student_net
 
 volumes:
   pgdata_dev:
-
-
-networks:
-  student_net:
-    driver: bridge

@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: student_info_app_dev
+    container_name: sis-dev
     build:
       context: .
       dockerfile: Dockerfile
@@ -23,7 +23,7 @@ services:
 
   db:
     image: postgres:18.1
-    container_name: postgres_dev
+    container_name: postgres-dev
     restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -32,7 +32,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata_dev:/var/lib/postgresql/data
+      - pgdata_dev:/var/lib/postgresql
       - ./db/init:/docker-entrypoint-initdb.d
     networks:
       - student_net

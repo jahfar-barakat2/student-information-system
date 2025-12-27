@@ -1,7 +1,7 @@
 # ==========================================
 # STAGE 1: Development & Builder 
 # ==========================================
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:24.04 AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive
 

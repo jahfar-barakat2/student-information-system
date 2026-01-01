@@ -2,6 +2,26 @@
 #include <pqxx/pqxx> // The PostgreSQL C++ library
 #include <cstdlib>   // For std::getenv
 
+
+// Function 1: Save Student Information
+void saveStudent(pqxx::connection& C, int id, std::string name, std::string surname, std::string dept, std::string email) {
+    try {
+        pqxx::work W(C); // Start transaction
+        
+        // Use 'exec_params' to prevent SQL injection and handle data safely
+        // $1, $2... maps to the arguments passed after the query string
+        W.exec_params(
+            "INSERT INTO students (id, name, surname, department, email) VALUES ($1, $2, $3, $4, $5)",
+            id, name, surname, dept, email
+        );
+
+        W.commit(); // Commit transaction
+        std::cout << "[SUCCESS] Student saved: " << name << " " << surname << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "[ERROR] Could not save student: " << e.what() << std::endl;
+    }
+}
+
 int main() {
     try {
         // 1. Get connection details from environment variables (set in docker-compose)
@@ -30,19 +50,21 @@ int main() {
         }
 
         // 4. Create the table (Basic Function: Week 3 Requirement)
-        pqxx::work W(C);
-        std::string sql = "CREATE TABLE IF NOT EXISTS students ("
-                          "id INT PRIMARY KEY NOT NULL,"
-                          "name TEXT NOT NULL,"
-                          "surname TEXT NOT NULL,"
-                          "department TEXT,"
-                          "email TEXT);";
+        // pqxx::work W(C);
+        // std::string sql = "CREATE TABLE IF NOT EXISTS students ("
+        //                   "id INT PRIMARY KEY NOT NULL,"
+        //                   "name TEXT NOT NULL,"
+        //                   "surname TEXT NOT NULL,"
+        //                   "department TEXT,"
+        //                   "email TEXT);";
         
-        W.exec(sql);
+        // W.exec(sql);
 
         
-        W.commit(); // Save changes
-        std::cout << "Table 'students' is ready." << std::endl;
+        // W.commit(); // Save changes
+        // std::cout << "Table 'students' is ready." << std::endl;
+
+        saveStudent(C,00,"name","surname","dept","name.surname@email.com");        
 
 
     } catch (const std::exception &e) {

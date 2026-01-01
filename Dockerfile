@@ -26,7 +26,7 @@ CMD ["tail", "-f", "/dev/null"]
 # ==========================================
 # STAGE 2: Production 
 # ==========================================
-FROM ubuntu:22.04 AS production
+FROM ubuntu:24.04 AS production
 
 # Install ONLY runtime libraries
 RUN apt-get update && apt-get install -y \

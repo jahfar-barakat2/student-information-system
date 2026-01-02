@@ -21,6 +21,24 @@ void StudentRepository::initializeTable() {
     }
 }
 
+void StudentRepository::save(const Student& s) {
+    try {
+        auto conn = Database::getInstance().getConnection();
+        pqxx::work W(*conn);
+        
+        // Using exec_params for security
+        W.exec_params(
+            "INSERT INTO students (id, name, surname, department, email) "
+            "VALUES ($1, $2, $3, $4, $5)",
+            s.id, s.name, s.surname, s.department, s.email
+        );
+        
+        W.commit();
+        std::cout << "[SUCCESS] Saved student: " << s.name << std::endl;
+    } catch (const std::exception &e) {
+        logError("Save failed: " + std::string(e.what()));
+    }
+}
 
 void StudentRepository::logError(const std::string& message) {
     std::cerr << "[ERROR] " << message << std::endl;

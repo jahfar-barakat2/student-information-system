@@ -1,6 +1,7 @@
 #include "StudentRepository.hpp"
 #include "Database.hpp" // Needs access to DB
 #include <iostream>
+#include <iomanip>
 
 void StudentRepository::initializeTable() {
     try {
@@ -38,6 +39,52 @@ void StudentRepository::save(const Student& s) {
     } catch (const std::exception &e) {
         logError("Save failed: " + std::string(e.what()));
     }
+}
+
+std::vector<Student> StudentRepository::getAllStudents(){
+    std::vector<Student> students;
+    try {
+        auto conn = Database::getInstance().getConnection();
+        pqxx::work W(*conn);
+        
+        pqxx::result R = W.exec("SELECT id, name, surname, department, email FROM students ORDER BY id ASC");
+        
+        std::cout << "\n--------------------------------------------------------------------------------\n";
+        std::cout << std::left 
+                  << std::setw(10) << "ID" 
+                  << std::setw(15) << "Name" 
+                  << std::setw(15) << "Surname" 
+                  << std::setw(20) << "Department" 
+                  << std::setw(20) << "Email";
+        std::cout << "\n--------------------------------------------------------------------------------\n";
+
+
+        for (auto row : R) {
+            std::cout << std::left 
+                      << std::setw(10) << row[0].as<int>() 
+                      << std::setw(15) << row[1].as<std::string>() 
+                      << std::setw(15) << row[2].as<std::string>() 
+                      << std::setw(20) << row[3].as<std::string>() 
+                      << std::setw(20) << row[4].as<std::string>() 
+                      << "\n";
+        }
+        std::cout << "--------------------------------------------------------------------------------\n";
+
+
+        for (auto row : R) {
+            students.push_back({
+                row[0].as<int>(),
+                row[1].as<std::string>(),
+                row[2].as<std::string>(),
+                row[3].as<std::string>(),
+                row[4].as<std::string>()
+            });
+        }
+        std::cout << "[INFO] Retrieved " << students.size() << " students." << std::endl;
+    } catch (const std::exception &e) {
+        logError("getAllSttudents failed: " + std::string(e.what()));
+    }
+    return students;
 }
 
 void StudentRepository::logError(const std::string& message) {

@@ -10,17 +10,18 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
-    git \
-    gdb \
     libpq-dev \
     libpqxx-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
+COPY . .
 
-# This keeps the container alive for interaction.
-CMD ["tail", "-f", "/dev/null"]
+RUN mkdir -p build && \
+    cd build && \
+    cmake .. && \
+    make -j$(nproc)
 
 
 # ==========================================
@@ -31,6 +32,7 @@ FROM ubuntu:24.04 AS production
 # Install ONLY runtime libraries
 RUN apt-get update && apt-get install -y \
     libpqxx-dev \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -39,5 +41,5 @@ WORKDIR /app
 # (Assuming you run 'make' in the builder stage first)
 COPY --from=builder /app/build/StudentSystem .
 
-# In Prod, the app runs immediately
+# This keeps the container alive for interaction.
 CMD ["./StudentSystem"]

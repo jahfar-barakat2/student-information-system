@@ -15,7 +15,7 @@ void Menu::run() {
         try {
             switch (choice) {
                 case 1: handleAdd(); break;
-               
+                case 2: handleList(); break;
                 case 0: 
                     running = false; 
                     std::cout << "Exiting system. Goodbye!\n";
@@ -62,6 +62,12 @@ void Menu::handleAdd() {
     Student s = {id, name, surname, dept, email};
     repo.save(s);
 }
+
+void Menu::handleList() {
+    std::cout << "\n--- STUDENT LIST ---\n";
+    repo.getAllStudents(); 
+}
+
 
 // --- HELPERS ---
 

@@ -109,6 +109,26 @@ void StudentRepository::updateStudent(const Student& s){
     }
 }
 
+void StudentRepository::deleteStudent(int id) {
+    try {
+        auto conn = Database::getInstance().getConnection();
+        pqxx::work W(*conn);
+        
+        auto result = W.exec_params("DELETE FROM students WHERE id = $1", id);
+        
+        W.commit();
+        
+        if (result.affected_rows() > 0) {
+            std::cout << "[SUCCESS] Deleted student ID: " << id << std::endl;
+        } else {
+            std::cerr << "[WARN] Student ID " << id << " not found for deletion." << std::endl;
+        }
+    } catch (const std::exception &e) {
+        logError("Delete failed: " + std::string(e.what()));
+    }
+}
+
+
 void StudentRepository::logError(const std::string& message) {
     std::cerr << "[ERROR] " << message << std::endl;
 }

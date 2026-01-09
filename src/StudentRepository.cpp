@@ -41,6 +41,29 @@ void StudentRepository::save(const Student& s) {
     }
 }
 
+std::unique_ptr<Student> StudentRepository::findById(int id) {
+    try {
+        auto conn = Database::getInstance().getConnection();
+        pqxx::work W(*conn);
+        
+        pqxx::result R = W.exec_params("SELECT id, name, surname, department, email FROM students WHERE id = $1", id);
+        
+        if (R.empty()) return nullptr;
+
+        auto row = R[0];
+        return std::make_unique<Student>(Student{
+            row[0].as<int>(),
+            row[1].as<std::string>(),
+            row[2].as<std::string>(),
+            row[3].as<std::string>(),
+            row[4].as<std::string>()
+        });
+    } catch (const std::exception &e) {
+        logError("FindById failed: " + std::string(e.what()));
+        return nullptr;
+    }
+}
+
 std::vector<Student> StudentRepository::getAllStudents(){
     std::vector<Student> students;
     try {

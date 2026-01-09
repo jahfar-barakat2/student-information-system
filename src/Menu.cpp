@@ -17,6 +17,7 @@ void Menu::run() {
                 case 1: handleAdd(); break;
                 case 2: handleList(); break;
                 case 3: handleSearch(); break;
+                case 4: handleUpdate(); break;
                 case 0: 
                     running = false; 
                     std::cout << "Exiting system. Goodbye!\n";
@@ -83,6 +84,43 @@ void Menu::handleSearch() {
     } else {
         std::cout << "[!] Student not found.\n";
     }
+}
+
+void Menu::handleUpdate() {
+    std::cout << "\n--- UPDATE STUDENT ---\n";
+    int id = getIntInput("Enter Student ID to update: ");
+    
+    // 1. FETCH
+    auto s = repo.findById(id);
+    if (!s) {
+        std::cout << "[!] Student not found.\n";
+        return;
+    }
+
+    std::cout << "Updating Student: " << s->name << " " << s->surname << "\n";
+    std::cout << "(Press ENTER to keep current value)\n";
+
+    // 2. MODIFY (Smart Input)
+    std::string input;
+
+    // Update Name
+    input = getStringInput("Name [" + s->name + "]: ");
+    if (!input.empty()) s->name = input;
+
+    // Update Surname
+    input = getStringInput("Surname [" + s->surname + "]: ");
+    if (!input.empty()) s->surname = input;
+
+    // Update Department
+    input = getStringInput("Department [" + s->department + "]: ");
+    if (!input.empty()) s->department = input;
+
+    // Update Email
+    input = getStringInput("Email [" + s->email + "]: ");
+    if (!input.empty()) s->email = input;
+
+    // 3. SAVE
+    repo.updateStudent(*s);
 }
 
 // --- HELPERS ---

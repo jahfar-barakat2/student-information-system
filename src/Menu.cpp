@@ -16,6 +16,7 @@ void Menu::run() {
             switch (choice) {
                 case 1: handleAdd(); break;
                 case 2: handleList(); break;
+                case 3: handleSearch(); break;
                 case 0: 
                     running = false; 
                     std::cout << "Exiting system. Goodbye!\n";
@@ -68,6 +69,21 @@ void Menu::handleList() {
     repo.getAllStudents(); 
 }
 
+void Menu::handleSearch() {
+    std::cout << "\n--- SEARCH STUDENT ---\n";
+    int id = getIntInput("Enter Student ID: ");
+    auto s = repo.findById(id);
+
+    if (s) {
+        std::cout << "\n[FOUND]\n";
+        std::cout << "ID: " << s->id << "\n";
+        std::cout << "Name: " << s->name << " " << s->surname << "\n";
+        std::cout << "Dept: " << s->department << "\n";
+        std::cout << "Email: " << s->email << "\n";
+    } else {
+        std::cout << "[!] Student not found.\n";
+    }
+}
 
 // --- HELPERS ---
 

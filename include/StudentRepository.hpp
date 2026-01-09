@@ -9,6 +9,8 @@ public:
     // This method adds new student to the table
     void save(const Student& student);
 
+    std::unique_ptr<Student> findById(int id);
+
     std::vector<Student> getAllStudents() ;
     
     void updateStudent(const Student& student);

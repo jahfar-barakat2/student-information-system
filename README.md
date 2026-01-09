@@ -1,39 +1,163 @@
 # Student Information System
 
-System Programming course project.
+System Programming course project implemented in **C++**, using **Docker** and **PostgreSQL**.
+
+This project is a **command-line based Student Information System** that allows managing student records with full CRUD functionality.
 
 ## 🧰 Technologies
 
-- C++
-- PostgreSQL (planned)
-- Docker & Docker Compose
-- GitHub Actions (planned)
-- Ubuntu
+- **C++ (C++17)**
+- **PostgreSQL**
+- **Docker & Docker Compose**
+- **Ubuntu**
 
 ## 📌 Project Description
 
-A CLI-based **Student Information System** written in C++.
+The Student Information System is a **menu-driven CLI application** that enables users to:
 
-The goal of the project is to build a system that will:
+- Add new students
+- List all students
+- Search students by ID
+- Update existing student records
+- Delete students safely with confirmation
 
-- store student information
-- support basic CRUD operations (create, read, update, delete)
-- interact with a PostgreSQL database
+All student data is stored persistently in a **PostgreSQL database**.
 
-> Functionality is **currently under development**.  
-> Database layer and CRUD operations will be added in upcoming iterations.
 
-## 🚀 Development Environment
+## ✨ Features
 
-The repository currently includes:
+- Interactive CLI menu
+- PostgreSQL database integration
+- Full CRUD operations
+- Input validation (numeric & string)
+- Safe update with partial field modification
+- Deletion confirmation
+- Table auto-initialization on startup
+- Exception-safe database access
+- Dockerized development environment
 
-- initial project structure
-- `Dockerfile` for containerizing the C++ application
-- `docker-compose.dev.yml` for development setup
-- basic README documentation
-- environment preparation scripts (planned)
 
-### ▶️ Run using Docker Compose (development)
+## 📁 Project Structure
+
+├── include/
+│ ├── Student.hpp
+│ ├── StudentRepository.hpp
+│ ├── Database.hpp
+│ └── Menu.hpp
+│
+├── src/
+│ ├── main.cpp
+│ ├── Menu.cpp
+│ ├── StudentRepository.cpp
+│ └── Database.cpp
+|
+|
+├── docs/
+│ ├── CONTRIBUTING.md
+│ ├── MANUAL.md
+│ ├── INSTALL.md
+│ 
+├── Dockerfile
+├── docker-compose.yml
+├── .gitignore
+├── .dockerignore
+├── CMakeLists.txt
+└── README.md
+
+
+
+
+## 🗄 Database Schema
+
+The application uses a single table:
+
+```sql
+students (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    surname TEXT,
+    department TEXT,
+    email TEXT
+)
+
+The table is automatically created at runtime if it does not exist.
+
+▶️ Running the Application (Docker – Recommended)
+
+Prerequisites
+
+ - Docker
+ - Docker compose
 
 ```bash
-docker compose -f docker-compose.dev.yml up --build
+    docker compose up --build -d
+
+    docker compose exec app ./StudentSystem
+
+This will:
+
+ - Start PostgreSQL
+
+ - Build the C++ application
+
+ - Run the CLI inside the container
+
+
+ cleanup:
+ docker compose down
+
+
+▶️ Running Locally (Without Docker)
+
+
+Requirements
+
+ - g++ (C++17)
+ - PostgreSQL
+ - libpqxx
+
+Build :
+    g++ -std=c++17 -I include src/*.cpp -lpqxx -lpq -o StudentSystem
+
+Run :
+    ./StudentSystem
+
+
+🧭 CLI Menu Overview
+
+========================================
+   STUDENT INFORMATION SYSTEM (CLI)
+========================================
+ 1. Add New Student
+ 2. List All Students
+ 3. Search Student by ID
+ 4. Update Student Details
+ 5. Delete Student
+ 0. Exit
+========================================
+
+
+🏷 Versioning
+
+This project follows semantic versioning.
+
+Current Version
+
+v1.0.0
+
+✔ Stable CRUD
+✔ Dockerized
+✔ PostgreSQL-backed
+✔ CLI-based
+
+
+📄 License
+
+This project is developed for academic purposes.
+
+Author
+
+Jahfar Barakat
+
+Computer Engineering Student
+

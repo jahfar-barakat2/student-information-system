@@ -8,9 +8,24 @@ Menu::Menu() {
 
 
 void Menu::run() {
-
+        bool running = true ;
         displayOptions();
+        int choice = getIntInput("Enter your choice: ");
 
+        try {
+            switch (choice) {
+                case 1: handleAdd(); break;
+               
+                case 0: 
+                    running = false; 
+                    std::cout << "Exiting system. Goodbye!\n";
+                    break;
+                default: 
+                    std::cout << "[!] Invalid choice. Please try again.\n";
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "[ERROR] An unexpected error occurred: " << e.what() << "\n";
+        }
 
 }
 
@@ -29,6 +44,24 @@ void Menu::displayOptions() {
 }
 
 
+void Menu::handleAdd() {
+    std::cout << "\n--- ADD NEW STUDENT ---\n";
+    int id = getIntInput("ID: ");
+    
+    //Check if ID exists first
+    if (repo.findById(id)) {
+        std::cout << "[!] Error: Student with ID " << id << " already exists.\n";
+        return;
+    }
+
+    std::string name = getStringInput("Name: ");
+    std::string surname = getStringInput("Surname: ");
+    std::string dept = getStringInput("Department: ");
+    std::string email = getStringInput("Email: ");
+
+    Student s = {id, name, surname, dept, email};
+    repo.save(s);
+}
 
 // --- HELPERS ---
 

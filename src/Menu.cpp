@@ -8,7 +8,8 @@ Menu::Menu() {
 
 
 void Menu::run() {
-        bool running = true ;
+    bool running = true;
+    while (running) {
         displayOptions();
         int choice = getIntInput("Enter your choice: ");
 
@@ -29,7 +30,9 @@ void Menu::run() {
         } catch (const std::exception& e) {
             std::cerr << "[ERROR] An unexpected error occurred: " << e.what() << "\n";
         }
-
+        
+        if (running) waitForKey();
+    }
 }
 
 

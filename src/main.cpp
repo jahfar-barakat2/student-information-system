@@ -11,7 +11,7 @@ int main() {
 
     std::vector<Student> vec;
 
-    repo.updateStudent(s1);
+    repo.deleteStudent(1000);
 
     vec = repo.getAllStudents();
     return 0;

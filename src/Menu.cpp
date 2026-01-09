@@ -18,6 +18,7 @@ void Menu::run() {
                 case 2: handleList(); break;
                 case 3: handleSearch(); break;
                 case 4: handleUpdate(); break;
+                case 5: handleDelete(); break;
                 case 0: 
                     running = false; 
                     std::cout << "Exiting system. Goodbye!\n";
@@ -121,6 +122,24 @@ void Menu::handleUpdate() {
 
     // 3. SAVE
     repo.updateStudent(*s);
+}
+
+void Menu::handleDelete() {
+    std::cout << "\n--- DELETE STUDENT ---\n";
+    int id = getIntInput("Enter Student ID to delete: ");
+    
+    // Confirm existence
+    if (!repo.findById(id)) {
+        std::cout << "[!] Student not found.\n";
+        return;
+    }
+
+    std::string confirm = getStringInput("Are you sure? (y/n): ");
+    if (confirm == "y" || confirm == "Y") {
+        repo.deleteStudent(id);
+    } else {
+        std::cout << "[INFO] Deletion cancelled.\n";
+    }
 }
 
 // --- HELPERS ---

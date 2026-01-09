@@ -8,7 +8,15 @@ class StudentRepository {
 public:
     // This method adds new student to the table
     void save(const Student& student);
+
+    std::unique_ptr<Student> findById(int id);
+
+    std::vector<Student> getAllStudents() ;
     
+    void updateStudent(const Student& student);
+
+    void deleteStudent(int id);
+
     // This creates a students table with (id,name,surname,department,email).Should be called for one time
     void initializeTable();
 

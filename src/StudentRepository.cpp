@@ -87,6 +87,28 @@ std::vector<Student> StudentRepository::getAllStudents(){
     return students;
 }
 
+void StudentRepository::updateStudent(const Student& s){
+    try {
+        auto conn = Database::getInstance().getConnection();
+        pqxx::work W(*conn);
+        
+        auto result = W.exec_params(
+            "UPDATE students SET name=$2, surname=$3, department=$4, email=$5 WHERE id=$1",
+            s.id, s.name, s.surname, s.department, s.email
+        );
+        
+        W.commit();
+        
+        if (result.affected_rows() > 0) {
+            std::cout << "[SUCCESS] Updated student ID: " << s.id << std::endl;
+        } else {
+            std::cerr << "[WARN] Student ID " << s.id << " not found for update." << std::endl;
+        }
+    } catch (const std::exception &e) {
+        logError("Update failed: " + std::string(e.what()));
+    }
+}
+
 void StudentRepository::logError(const std::string& message) {
     std::cerr << "[ERROR] " << message << std::endl;
 }

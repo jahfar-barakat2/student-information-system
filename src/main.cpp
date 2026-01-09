@@ -6,12 +6,12 @@ int main() {
     StudentRepository repo;
 
     
-    Student s1 = {1000, "name", "surname", "dept","email"};
-    repo.save(s1);
+    Student s1 = {1000, "student", "name", "fbu","surname@email.com"};
+    //repo.save(s1);
 
     std::vector<Student> vec;
 
-
+    repo.updateStudent(s1);
 
     vec = repo.getAllStudents();
     return 0;

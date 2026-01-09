@@ -11,6 +11,7 @@ public:
 
     std::vector<Student> getAllStudents() ;
     
+    void updateStudent(const Student& student);
     // This creates a students table with (id,name,surname,department,email).Should be called for one time
     void initializeTable();
 

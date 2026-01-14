@@ -24,6 +24,6 @@ jobs:
         run: |
           docker build -t student-information-system-app .
 
-      # 4. Success message (optional but nice for grading)
+      # 4. Success message 
       - name: Build finished
         run: echo "Docker image built successfully"
